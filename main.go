@@ -9,6 +9,7 @@ import (
 	"syscall"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/fatih/color"
 )
 
 // Variables used for command line parameters
@@ -23,7 +24,7 @@ var (
 
 func init() {
 	flag.StringVar(&Help, "h", "f", "Display helper ids")
-	flag.StringVar(&Token, "t", "", "Bot Token")
+	flag.StringVar(&Token, "t", "NDQxMzQyMDYxMjc1MzgxNzYz.DyCt9Q.cXcEH2JH8phxCHTTSdSO88JHImE", "Bot Token")
 	flag.Parse()
 }
 
@@ -41,7 +42,7 @@ func main() {
 		fmt.Print("\n\nSaved Ids:\n DN:general:\t422293824770146306\n PH:general:\t469851459966730262\n FC:general:\t439871916082331650\n: ")
 	}
 	inp = read()
-	fmt.Println("Connecting...")
+	fmt.Println("Connecting... (this may take a while)")
 
 	// Register the messageCreate func as a callback for MessageCreate events.
 	dg.AddHandler(messageCreate)
@@ -68,13 +69,21 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if loc == inp {
 		// If you sent the message, don't show it
 		if m.Author.ID != s.State.User.ID {
-			fmt.Println("\n >>> " + m.Author.Username + ": " + m.Content)
+			temp := color.New(color.FgCyan).PrintfFunc()
+			author := "\n >>> " + m.Author.Username
+			temp("%s", author)
+			fmt.Println(": " + m.Content)
+		} else {
+			temp := color.New(color.FgRed).PrintfFunc()
+			author := "\n >>> You"
+			temp("%s", author)
+			fmt.Println(": " + m.Content)
 		}
 		msg = read()
 		if strings.HasPrefix(msg, ">>") {
 			check_for_cmd(msg)
 		} else {
-			s.ChannelMessageSend(m.ChannelID, msg)
+			s.ChannelMessageSend(inp, msg)
 		}
 	}
 }
