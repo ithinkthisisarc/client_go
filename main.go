@@ -23,7 +23,7 @@ var (
 
 func init() {
 	flag.StringVar(&Help, "h", "f", "Display helper ids")
-	flag.StringVar(&Token, "t", "NDQxMzQyMDYxMjc1MzgxNzYz.DyCt9Q.cXcEH2JH8phxCHTTSdSO88JHImE", "Bot Token")
+	flag.StringVar(&Token, "t", "", "Bot Token")
 	flag.Parse()
 }
 
