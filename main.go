@@ -37,10 +37,15 @@ func main() {
 	}
 
 	fmt.Println("Welcome to Client_Go, a discord command line client written in go!")
-	fmt.Print("Enter the ID of the channel you would like to talk in: ")
+	fmt.Print("Enter the ID of the channel you would like to talk in ('*' for all messages): ")
+
 	if Help == "t" {
-		fmt.Print("\n\nSaved Ids:\n DN:general:\t422293824770146306\n PH:general:\t469851459966730262\n FC:general:\t439871916082331650\n: ")
+		fmt.Print("\n")
+		for i := 0; i < len(ids.ids); i++ {
+			fmt.Printf("\t%s\n", ids.ids[i])
+		}
 	}
+	fmt.Print(": ")
 	inp = read()
 	fmt.Println("Connecting... (this may take a while)")
 
@@ -66,7 +71,7 @@ func main() {
 
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	loc := m.ChannelID
-	if loc == inp {
+	if loc == inp || inp == "*" {
 		// If you sent the message, don't show it
 		if m.Author.ID != s.State.User.ID {
 			temp := color.New(color.FgCyan).PrintfFunc()
